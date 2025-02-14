@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Table Creator</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        td, th {
+            padding: 10px;
+            border: 1px solid black;
+        }
+        .delete-btn {
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Dynamic Table Creator</h2>
+    
+    <label for="rows">Number of Rows:</label>
+    <input type="number" id="rows" placeholder="Enter number of rows" min="1">
+    
+    <label for="cols">Number of Columns:</label>
+    <input type="number" id="cols" placeholder="Enter number of columns" min="1">
+    
+    <button onclick="generateTable()">Generate Table</button>
+
+    <div class="container" id="table-container"></div>
+
+    <script>
+        function generateTable() {
+            const rows = document.getElementById('rows').value;
+            const cols = document.getElementById('cols').value;
+            const container = document.getElementById('table-container');
+            
+            if (rows <= 0 || cols <= 0) {
+                alert("Please enter valid numbers for rows and columns.");
+                return;
+            }
+            
+            // Clear any existing table
+            container.innerHTML = '';
+
+            // Create the table element
+            const table = document.createElement('table');
+            
+            // Generate the table rows and columns
+            for (let i = 0; i < rows; i++) {
+                const row = table.insertRow();
+                for (let j = 0; j < cols; j++) {
+                    const cell = row.insertCell();
+                    cell.textContent = `Row ${i + 1}, Col ${j + 1}`;
+                    // Add delete button inside the cell
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = 'Delete Cell';
+                    deleteBtn.classList.add('delete-btn');
+                    deleteBtn.onclick = function() {
+                        row.deleteCell(j);
+                    };
+                    cell.appendChild(deleteBtn);
+                }
+            }
+
+            // Add the table to the container
+            container.appendChild(table);
+        }
+
+    </script>
+</body>
+</html>
