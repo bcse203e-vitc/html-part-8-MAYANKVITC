@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Font Size Adjuster</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #333;
+            color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 400px;
+        }
+
+        p {
+            font-size: 16px; /* Default font size */
+            margin: 20px 0;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .reset-button {
+            background-color: #f44336;
+        }
+
+        .reset-button:hover {
+            background-color: #e53935;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Dynamic Font Size Adjuster</h2>
+        <p id="text-paragraph">This is a sample paragraph. Click the buttons below to adjust the font size.</p>
+        <button id="increase-font">Increase Font Size</button>
+        <button id="decrease-font">Decrease Font Size</button>
+        <button class="reset-button" id="reset-font">Reset Font Size</button>
+    </div>
+
+    <script>
+        // Initial font size
+        let fontSize = 16;
+
+        // Select the paragraph and buttons
+        const paragraph = document.getElementById('text-paragraph');
+        const increaseButton = document.getElementById('increase-font');
+        const decreaseButton = document.getElementById('decrease-font');
+        const resetButton = document.getElementById('reset-font');
+
+        // Event listener for increase font button
+        increaseButton.addEventListener('click', () => {
+            fontSize += 2; // Increase font size by 2px
+            paragraph.style.fontSize = fontSize + 'px';
+        });
+
+        // Event listener for decrease font button
+        decreaseButton.addEventListener('click', () => {
+            fontSize = Math.max(8, fontSize - 2); // Decrease font size by 2px, but not less than 8px
+            paragraph.style.fontSize = fontSize + 'px';
+        });
+
+        // Event listener for reset font size button
+        resetButton.addEventListener('click', () => {
+            fontSize = 16; // Reset to default font size
+            paragraph.style.fontSize = fontSize + 'px';
+        });
+    </script>
+
+</body>
+</html>
