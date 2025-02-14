@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign-Up Form with Live Validation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        .form-container {
+            width: 300px;
+            margin: auto;
+        }
+        .form-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-container input.invalid {
+            border-color: red;
+        }
+        .form-container input.valid {
+            border-color: green;
+        }
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-container button:disabled {
+            background-color: gray;
+            cursor: not-allowed;
+        }
+        .error-message {
+            color: red;
+            font-size: 12px;
+            display: none;
+        }
+        .valid-message {
+            color: green;
+            font-size: 12px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Sign Up</h2>
+        
+        <form id="signup-form">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter your name">
+            <div id="name-error" class="error-message">Name must not be empty.</div>
+            <div id="name-valid" class="valid-message">Looks good!</div>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email">
+            <div id="email-error" class="error-message">Please enter a valid email.</div>
+            <div id="email-valid" class="valid-message">Valid email format!</div>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password">
+            <div id="password-error" class="error-message">Password must be at least 8 characters with 1 uppercase and 1 number.</div>
+            <div id="password-valid" class="valid-message">Strong password!</div>
+            
+            <button type="submit" id="submit-btn" disabled>Sign Up</button>
+        </form>
+    </div>
+
+    <script>
+        // Get references to form elements
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const submitButton = document.getElementById('submit-btn');
+
+        const nameError = document.getElementById('name-error');
+        const emailError = document.getElementById('email-error');
+        const passwordError = document.getElementById('password-error');
+
+        const nameValid = document.getElementById('name-valid');
+        const emailValid = document.getElementById('email-valid');
+        const passwordValid = document.getElementById('password-valid');
+
+        // Real-time validation for Name field
+        nameInput.addEventListener('input', () => {
+            const name = nameInput.value.trim();
+            if (name === '') {
+                nameInput.classList.add('invalid');
+                nameInput.classList.remove('valid');
+                nameError.style.display = 'block';
+                nameValid.style.display = 'none';
+            } else {
+                nameInput.classList.remove('invalid');
+                nameInput.classList.add('valid');
+                nameError.style.display = 'none';
+                nameValid.style.display = 'block';
+            }
+            toggleSubmitButton();
+        });
+
+        // Real-time validation for Email field
+        emailInput.addEventListener('input', () => {
+            const email = emailInput.value.trim();
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            if (!emailPattern.test(email)) {
+                emailInput.classList.add('invalid');
+                emailInput.classList.remove('valid');
+                emailError.style.display = 'block';
+                emailValid.style.display = 'none';
+            } else {
+                emailInput.classList.remove('invalid');
+                emailInput.classList.add('valid');
+                emailError.style.display = 'none';
+                emailValid.style.display = 'block';
+            }
+            toggleSubmitButton();
+        });
+
+        // Real-time validation for Password field
+        passwordInput.addEventListener('input', () => {
+            const password = passwordInput.value.trim();
+            const passwordPattern = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+            if (!passwordPattern.test(password)) {
+                passwordInput.classList.add('invalid');
+                passwordInput.classList.remove('valid');
+                passwordError.style.display = 'block';
+                passwordValid.style.display = 'none';
+            } else {
+                passwordInput.classList.remove('invalid');
+                passwordInput.classList.add('valid');
+                passwordError.style.display = 'none';
+                passwordValid.style.display = 'block';
+            }
+            toggleSubmitButton();
+        });
+
+        // Enable/disable the submit button based on form validity
+        function toggleSubmitButton() {
+            const isNameValid = nameInput.classList.contains('valid');
+            const isEmailValid = emailInput.classList.contains('valid');
+            const isPasswordValid = passwordInput.classList.contains('valid');
+            
+            if (isNameValid && isEmailValid && isPasswordValid) {
+                submitButton.disabled = false;
+            } else {
+                submitButton.disabled = true;
+            }
+        }
+    </script>
+</body>
+</html>
