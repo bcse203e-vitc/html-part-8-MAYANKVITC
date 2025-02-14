@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f7f7f7;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #333;
+            color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+        }
+
+        input[type="number"] {
+            width: 100px;
+            padding: 10px;
+            font-size: 18px;
+            margin: 10px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .timer-display {
+            font-size: 30px;
+            margin-top: 20px;
+        }
+
+        .message {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Countdown Timer</h2>
+        <input type="number" id="time-input" placeholder="Enter seconds" min="1">
+        <button id="start-btn">Start</button>
+        <div class="timer-display" id="timer-display">00:00</div>
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        let countdownInterval;
+        let timeRemaining;
+
+        // Play sound when timer reaches zero
+        const sound = new Audio('https://www.soundjay.com/button/beep-07.wav');
+
+        // Start the countdown timer
+        document.getElementById('start-btn').addEventListener('click', function() {
+            const timeInput = document.getElementById('time-input').value;
+            timeRemaining = parseInt(timeInput);
+
+            if (isNaN(timeRemaining) || timeRemaining <= 0) {
+                alert("Please enter a valid number of seconds.");
+                return;
+            }
+
+            // Clear any previous intervals
+            clearInterval(countdownInterval);
+
+            // Display the initial time
+            updateDisplay(timeRemaining);
+
+            // Start the countdown
+            countdownInterval = setInterval(function() {
+                timeRemaining--;
+                updateDisplay(timeRemaining);
+
+                if (timeRemaining <= 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById('message').textContent = "Time's up!";
+                    sound.play();  // Play sound when timer reaches zero
+                }
+            }, 1000);
+        });
+
+        // Update the timer display
+        function updateDisplay(time) {
+            const minutes = Math.floor(time / 60);
+            const seconds = time % 60;
+            document.getElementById('timer-display').textContent = `${formatTime(minutes)}:${formatTime(seconds)}`;
+        }
+
+        // Format time to always show two digits
+        function formatTime(time) {
+            return time < 10 ? "0" + time : time;
+        }
+    </script>
+
+</body>
+</html>
