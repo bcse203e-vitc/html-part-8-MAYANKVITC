@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Counter with Repeated Word Highlight</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .container {
+            width: 70%;
+            margin: auto;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+
+        .word-count {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .highlight {
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Word Counter with Repeated Word Highlight</h2>
+        <textarea id="text-input" placeholder="Start typing..."></textarea>
+        <div class="word-count" id="word-count">Word Count: 0</div>
+    </div>
+
+    <script>
+        const textarea = document.getElementById('text-input');
+        const wordCountDisplay = document.getElementById('word-count');
+
+        // Function to update word count and highlight repeated words
+        textarea.addEventListener('input', () => {
+            const text = textarea.value.trim();
+            const words = text.split(/\s+/).filter(word => word.length > 0); // Split and filter empty words
+
+            // Update word count display
+            wordCountDisplay.textContent = `Word Count: ${words.length}`;
+
+            // Highlight repeated words
+            highlightRepeatedWords(words);
+        });
+
+        // Function to highlight repeated words
+        function highlightRepeatedWords(words) {
+            const wordFrequency = {};
+            const uniqueWords = words.filter(word => {
+                word = word.toLowerCase(); // Make it case-insensitive
+                wordFrequency[word] = (wordFrequency[word] || 0) + 1;
+                return wordFrequency[word] === 1;
+            });
+
+            // Create a regex pattern for repeated words
+            const repeatedWords = Object.keys(wordFrequency).filter(word => wordFrequency[word] > 1);
+
+            // Apply highlight for repeated words
+            let highlightedText = textarea.value;
+            repeatedWords.forEach(repeatedWord => {
+                const regex = new RegExp(`\\b${repeatedWord}\\b`, 'gi'); // Word boundaries for exact match
+                highlightedText = highlightedText.replace(regex, `<span class="highlight">${repeatedWord}</span>`);
+            });
+
+            // Update textarea content with highlighted words (using innerHTML for highlighting)
+            textarea.innerHTML = highlightedText;
+        }
+    </script>
+
+</body>
+</html>
